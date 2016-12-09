@@ -28,10 +28,9 @@ var _ = Describe("Latency as a service", func() {
 			})
 
 			It("returns 'OK' after 500 ms", func() {
-				timeBeforeRequest := time.Now().UnixNano() / int64(time.Millisecond)
+				beforeRequest := time.Now()
 				latencyServer(writer, request)
-				timeAfterRequest := time.Now().UnixNano() / int64(time.Millisecond)
-				latency := timeAfterRequest - timeBeforeRequest
+				latency := time.Since(beforeRequest) / time.Millisecond
 				Expect(writer.Body.Bytes()).To(ContainSubstring("OK"))
 				Expect(latency).To(BeNumerically("~", 500, 20))
 			})
@@ -49,10 +48,9 @@ var _ = Describe("Latency as a service", func() {
 			})
 
 			It("returns OK after 100 ms", func() {
-				timeBeforeRequest := time.Now().UnixNano() / int64(time.Millisecond)
+				beforeRequest := time.Now()
 				latencyServer(writer, request)
-				timeAfterRequest := time.Now().UnixNano() / int64(time.Millisecond)
-				latency := timeAfterRequest - timeBeforeRequest
+				latency := time.Since(beforeRequest) / time.Millisecond
 				Expect(writer.Body.Bytes()).To(ContainSubstring("OK"))
 				Expect(latency).To(BeNumerically("~", 100, 10))
 			})
